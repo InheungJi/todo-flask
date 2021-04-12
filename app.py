@@ -16,4 +16,3 @@ login_manager.init_app(app)
 
 import routes,models
 
-db.create_all()
