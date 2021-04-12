@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Todos</h1>
+    <ul>
+    {% for todo in template_todoData %}
+        <li>{{todo.todo_text}} {{ todo.date_info }}</li>
+    {% endfor %}
+    </ul>
+
+<form action="/user/{{ user_id }}" method="post">
+    {{ template_todoForm.hidden_tag() }}
+    <p>
+        {{ template_todoForm.todo }}
+        {{ template_todoForm.submit }}
+    </p>
+</form>
+<button><a href="/logout">Logout</a></button>
+{% endblock%}
