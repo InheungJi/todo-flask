@@ -1,4 +1,4 @@
-from flask import render_template, request, url_for, redirect
+from flask import render_template, request, url_for, redirect,flash
 from flask_login import login_user, login_required, logout_user
 from models import User, Todo
 from forms import LoginForm, TodoForm, RegistrationForm
@@ -9,9 +9,7 @@ from app import db, app, login_manager
 def register():
     form = RegistrationForm()
     login_form = LoginForm()
-    print("?????")
     if form.validate_on_submit():
-        print("!!!!")
         user = User(username=form.username.data, email=form.email.data)
         user.set_password(form.password.data)
         db.session.add(user)
@@ -22,28 +20,25 @@ def register():
 
 @app.route('/', methods=["GET", "POST"])
 def index():
-
-
     login_form = LoginForm()
     todo_form = TodoForm()
     if login_form.validate_on_submit():
-        print('index!!')
         user = User.query.filter_by(username=login_form.username.data).first()
-        print(user.username)
-        login_user(user)
         if user and user.check_password(login_form.password.data):
+            login_user(user)
             todos = Todo.query.filter_by(user_id=user.id)
             return render_template('login_index.html', current_user=user, user_id=user.id,
                                    template_todoForm=todo_form, template_todoData=todos)
         else:
-            print('oops!!!')
+            flash('you need to make account!!')
+            form = RegistrationForm()
+            return render_template('registration.html', register_form = form)
     return render_template('index.html', login=login_form)
 
 
 @app.route('/user/<user_id>', methods=["GET", "POST"])
 @login_required
 def login_index(user_id):
-    print("login_index!!!")
     user = User.query.filter_by(id=user_id).first_or_404()
     todo_form = TodoForm()
     if todo_form.validate_on_submit():

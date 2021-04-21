@@ -1,12 +1,25 @@
-{% extends 'base.html' %}
-{% block content %}
-<h1>Sign In</h1>
-<p>New User? <a href="{{ url_for('register')}}">Click to Register!</a></p>
-<form action='/' method="post">
-    {{ login.hidden_tag() }}
-    <p>{{ login.username.label }}{{ login.username }}</p>
-    <p>{{ login.password.label }}{{ login.password }}</p>
-    <p>{{ login.remember() }}{{ login.remember.label }}</p>
-    <p>{{ login.submit }}</p>
-</form>
+{% extends 'base.html' %} {% block content %}
+
+<div id="login_form">
+	<div class="login_container">
+		<div class="login_header"><h1>Sign In</h1></div>
+		<p>New User? <a href="{{ url_for('register')}}">Click to Register!</a></p>
+		<form action="/" method="post" id="center">
+			{{ login.hidden_tag() }}
+			<div id="login_username">
+				<span class="label">{{ login.username.label }}</span>
+				{{ login.username }}
+			</div>
+			<div id="login_password">
+				<span class="label">{{ login.password.label }}</span>
+				{{ login.password }}
+			</div>
+			<div id="login_remember">
+				{{ login.remember() }}
+				<span class="label">{{ login.remember.label }}</span>
+			</div>
+			<div id="login_submit">{{ login.submit }}</div>
+		</form>
+	</div>
+</div>
 {% endblock %}
