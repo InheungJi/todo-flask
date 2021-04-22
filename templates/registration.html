@@ -1,16 +1,18 @@
-{% extends 'base.html' %}
-{% block content %}
-<div class="registration_form">
-    <h1>Registration!</h1>
+{% extends 'base.html' %} {% block content %}
+<div class="registration_container">
+	<div class="registration">
+		<div class="title registration_header"><h1>Registration!</h1></div>
 
-    <form action="/register" method="post">
-        {{ register_form.hidden_tag() }}
-        <p>{{ register_form.username.label }}{{ register_form.username }}</p>
-        <p>{{ register_form.email.label }}{{ register_form.email }}</p>
-        <p>{{ register_form.password.label }}{{ register_form.password }}</p>
-        <p>{{ register_form.password2.label }}{{ register_form.password2 }}</p>
-        <p>{{ register_form.submit }}</p>
-
-    </form>
+		<form action="/register" method="post">
+			{{ register_form.hidden_tag() }}
+			<div class="registration_form">
+				<p>{{ register_form.username.label }}{{ register_form.username }}</p>
+				<p>{{ register_form.email.label }}{{ register_form.email }}</p>
+				<p>{{ register_form.password.label }}{{ register_form.password }}</p>
+				<p>{{ register_form.password2.label }}{{ register_form.password2 }}</p>
+				<p>{{ register_form.submit }}</p>
+			</div>
+		</form>
+	</div>
 </div>
 {% endblock%}

@@ -1,20 +1,34 @@
-{% extends 'base.html' %}
-{% block content %}
-<div class="todo_form">
-        <h1>Todos</h1>
-        <ul>
-        {% for todo in template_todoData %}
-            <li>{{todo.todo_text}} {{ todo.date_info }}</li>
-        {% endfor %}
-        </ul>
+{% extends 'base.html' %} {% block content %}
+<div id="todo_form">
+	<div class="todo_form_container">
+		<div class="todo_header">
+			<div class="title"><h1>To-do</h1></div>
+			<button class="btn_logout"><a href="/logout">Logout</a></button>
+		</div>
+		<form action="/user/{{ user_id }}" method="post">
+			{{ template_todoForm.hidden_tag() }}
 
-    <form action="/user/{{ user_id }}" method="post">
-        {{ template_todoForm.hidden_tag() }}
-        <p>
-            {{ template_todoForm.todo }}
-            {{ template_todoForm.submit }}
-        </p>
-    </form>
-    <button><a href="/logout">Logout</a></button>
+			<div class="todo_input">
+				<span class="check">{{ template_todoForm.check }}</span>
+				<span class="todo_input_data">{{template_todoForm.todo }}</span>
+				<div class="todo_submit">{{ template_todoForm.submit }}</div>
+			</div>
+		</form>
+		<div class="todo_container">
+			{% for todo in template_todoData %}
+			<div class="todo_list">
+				<div class="todo {{ todo.check | lower() }}">
+					<div class="todo_text">{{todo.todo_text}}</div>
+					<div class="date_info">{{ todo.date_info }}</div>
+				</div>
+				<form action="/user/{{user_id}}" method="post">
+					<input type="hidden" value="{{todo.todo_text}}" , name="todo_data" />
+					<input type="hidden" value="{{todo.date_info}}" , name="date_info" />
+					{{template_todoForm.delete}}
+				</form>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
 </div>
 {% endblock%}

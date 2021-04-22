@@ -3,6 +3,7 @@ from flask_login import login_user, login_required, logout_user
 from models import User, Todo
 from forms import LoginForm, TodoForm, RegistrationForm
 from app import db, app, login_manager
+import datetime
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -14,6 +15,7 @@ def register():
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
+        login_form = LoginForm(formdata=None)
         return render_template('index.html', login=login_form)
     return render_template('registration.html', register_form=form)
 
@@ -41,11 +43,17 @@ def index():
 def login_index(user_id):
     user = User.query.filter_by(id=user_id).first_or_404()
     todo_form = TodoForm()
-    if todo_form.validate_on_submit():
-        todo = Todo(todo_text=todo_form.todo.data, user_id=user.id)
+    if (not todo_form.delete.data) and todo_form.validate_on_submit():
+        todo = Todo(todo_text=todo_form.todo.data, user_id=user.id, check=todo_form.check.data)
         db.session.add(todo)
         db.session.commit()
-
+        todo_form = TodoForm(formdata=None)
+    elif todo_form.delete.data:
+        todo_data = request.form.get('todo_data')
+        date_info_str = request.form.get('date_info')
+        date_info = datetime.datetime.strptime(str(date_info_str), '%Y-%m-%d %H:%M:%S.%f')
+        Todo.query.filter_by(todo_text=todo_data, user_id=user.id, date_info=date_info).delete()
+        db.session.commit()
     return render_template('login_index.html', template_todoForm=todo_form, template_todoData=user.todos,
                            user_id=user.get_id())
 

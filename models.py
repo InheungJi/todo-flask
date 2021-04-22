@@ -8,8 +8,10 @@ from werkzeug.security import generate_password_hash, check_password_hash
 class Todo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     todo_text = db.Column(db.String(100), index=True)
+    check = db.Column(db.String(50), index=True)
     date_info = db.Column(db.DateTime(), index=True, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
 
 
 class User(db.Model, UserMixin):

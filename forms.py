@@ -1,11 +1,13 @@
-from wtforms import StringField, SubmitField, PasswordField, BooleanField
+from wtforms import StringField, SubmitField, PasswordField, BooleanField, RadioField, SelectField
 from flask_wtf import FlaskForm
 from wtforms.validators import DataRequired, Email, EqualTo
 
 
 class TodoForm(FlaskForm):
     todo = StringField("Todo: ", validators=[DataRequired()])
+    check = SelectField("Check:", choices=["Normal", "Primary", "Important"])
     submit = SubmitField("Add Todo")
+    delete = SubmitField("X")
 
 
 class RegistrationForm(FlaskForm):
